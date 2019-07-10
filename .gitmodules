@@ -1,0 +1,39 @@
+[submodule "universal_robot"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/universal_robot
+	url = https://github.com/ros-industrial/universal_robot.git
+
+[submodule "image_pipeline"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/image_pipeline
+	url = https://github.com/i3drobotics/image_pipeline
+
+[submodule "gscam"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/gscam
+	url = https://github.com/i3drobotics/gscam.git
+
+[submodule "pylon_camera"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/pylon_camera
+	url = https://github.com/magazino/pylon_camera.git
+
+[submodule "camera_control_msgs"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/camera_control_msgs
+	url = https://github.com/magazino/camera_control_msgs.git
+
+[submodule "i3dr_stereo_camera-ros"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/i3dr_stereo_camera
+	url = https://github.com/i3drobotics/i3dr_stereo_camera-ros.git
+
+[submodule "i3dr_phobos_nuclear-ros"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/i3dr_phobos_nuclear
+	url = https://github.com/i3drobotics/i3dr_phobos_nuclear-ros.git
+
+[submodule "i3dr_pcl_tools-ros"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/i3dr_pcl_tools
+	url = https://github.com/i3drobotics/i3dr_pcl_tools-ros.git
+
+[submodule "i3dr_rtabmap-ros"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/i3dr_rtabmap
+	url = https://github.com/i3drobotics/i3dr_rtabmap-ros.git
+
+[submodule "i3dr_ur10-ros"]
+	path = i3dr_SBRI_ros_WS/src/i3dr/i3dr_ur10
+	url = https://github.com/i3drobotics/i3dr_ur10-ros.git

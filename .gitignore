@@ -1,0 +1,9 @@
+*.code-workspace
+.vscode/*
+i3dr_SBRI_ros_WS/.vscode/*
+i3dr_SBRI_ros_WS/src/.vscode/*
+i3dr_SBRI_ros_WS/build/*
+i3dr_SBRI_ros_WS/devel/*
+i3dr_SBRI_ros_WS/logs/*
+i3dr_SBRI_ros_WS/.catkin_tools/*
+i3dr_SBRI_ros_WS/Examples/*
