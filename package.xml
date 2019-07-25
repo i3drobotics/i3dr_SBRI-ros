@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
 
-  <name>isi_probe</name>
+  <name>i3dr_sbri</name>
   <version>0.0.1</version>
   <description>
-     IS Instruments ROS interface for interacting with probe
+    Launchers for controlling SBRI
   </description>
 
   <maintainer email="bknight@i3drobotics.com">Ben Knight</maintainer>
@@ -12,15 +12,11 @@
   
   <license>MIT</license>
 
-  <url type="website">http://www.is-instruments.com</url>
+  <url type="website">http://i3drobotics.com/</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
-  <depend>rospy</depend>
-  <depend>camera_info_manager</depend>
-  <depend>image_transport</depend>
-  <depend>nodelet</depend>
-  <depend>sensor_msgs</depend>
+  <depend>xacro</depend>
+  <depend>std_msgs</depend>
 
 </package>
-
