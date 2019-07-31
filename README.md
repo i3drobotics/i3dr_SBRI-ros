@@ -30,7 +30,7 @@ When the laser is on, 3D data is generating with assistance from the laser for a
 
 When the laser is off, image data can be fed to visual SLAM feature matchers that would otherwise be confused by image data with laser.
 
-Images are captured at 2 fps to allow time for longer exposures.
+Images are captured at 4 fps.
 
 ### Run RTABMAP mapping
 
