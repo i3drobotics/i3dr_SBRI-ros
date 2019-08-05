@@ -1,6 +1,0 @@
-<launch>
-    <arg name="folder_name" default=""/>
-    <arg name="bag_name" default=""/>
-    <arg name="save_ur10_tf" default="true"/>
-
-</launch>

@@ -71,23 +71,27 @@ There are launchers provided for recording rosbags so that different techniques 
 ## Record rosbag
 
 ```bash
-roslaunch i3dr_sbri rosbag_sbri_record.launch folder_name:=path/to/bag bag_name:=BAG_NAME.bag
+roslaunch i3dr_sbri rosbag_record.launch folder_name:=path/to/bag bag_name:=BAG_NAME camera_name:=CAMERA_NAME
 ```
+
+Required arguments:
+
+- Directory to save rosbag: folder_name:=[path/to/bag]
+- Filename for rosbag: bag_name:=[BAG_NAME]
+- Namspace for camera images: camera_name:=[CAMERA_NAME] (default: 'phobos_nuclear')
 
 Optional arguments:
 
-- Save TF / joint data from UR10: save_ur10_tf:=[true/false]
+- Save TF / joint data from UR10: save_tf:=[true/false] (default: true)
+- Is camera using split laser interlacing: split_laser:=[true/false]
 
 ## Playback rosbag
 
 ```bash
-roslauch i3dr_sbri rosbag_sbri_play.launch folder_name:=path/to/bag bag_name:=BAG_NAME.bag
+roslauch i3dr_sbri rosbag_play.launch folder_name:=path/to/bag bag_name:=BAG_NAME.bag
 ```
 
-Optional arguments:
+Required arguments:
 
-- Generate 3D from stereo images: stereo_match:=[true/false]
-
-- Run RTABMAP using rosbag data: rtabmap:=[true/false]
-
-- Run RVIZ to visualise data and processes: rviz:=[true/false]
+- Directory to save rosbag: folder_name:=[path/to/bag]
+- Filename for rosbag: bag_name:=[BAG_NAME]

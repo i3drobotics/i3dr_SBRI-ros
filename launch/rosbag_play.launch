@@ -1,0 +1,10 @@
+<launch>
+    <arg name="folder_name" default=""/>
+    <arg name="bag_name" default=""/>
+    
+    <param name="use_sim_time" value="true"/>
+
+    <!-- ROS BAG -->
+    <node pkg="rosbag" type="play" name="rosbag_play_SBRI_scan" args="--clock -r 1 '$(arg folder_name)/$(arg bag_name).bag'"/>
+
+</launch>

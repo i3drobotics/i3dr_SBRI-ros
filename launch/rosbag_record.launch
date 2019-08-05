@@ -1,0 +1,23 @@
+<launch>
+    <arg name="folder_name" default=""/>
+    <arg name="bag_name" default=""/>
+    <arg name="save_tf" default="true"/>
+    <arg name="camera_name" default="phobos_nuclear"/>
+    <arg name="split_laser" default="true"/>
+
+    <!-- tf topics to record -->
+    <arg if="$(arg save_tf)" name="tf_topics" default="/tf /tf_static /joint_states"/>
+    <arg unless="$(arg save_tf)" name="tf_topics" default=""/>
+
+    <!-- image topics to record -->
+    <arg unless="$(arg split_laser)" name="image_topics" default="/$(arg camera_name)/left/image_raw /$(arg camera_name)/left/camera_info /$(arg camera_name)/right/image_raw /$(arg camera_name)/right/camera_info"/>
+    <!-- if using split laser interlacing then record both with and without laser topics -->
+    <arg if="$(arg split_laser)" name="image_topics" default="/$(arg camera_name)/with_laser/left/image_raw /$(arg camera_name)/with_laser/left/camera_info /$(arg camera_name)/with_laser/right/image_raw /$(arg camera_name)/with_laser/right/camera_info /$(arg camera_name)/non_laser/left/image_raw /$(arg camera_name)/non_laser/left/camera_info /$(arg camera_name)/non_laser/right/image_raw /$(arg camera_name)/non_laser/right/camera_info"/>
+
+    <arg name="record_topics" default="$(args tf_topics) $(args image_topics)">
+
+    <!-- launch ros record node -->
+    <node pkg="rosbag" type="record" name="rosbag_record_SBRI_scan" 
+            args="record -o '$(arg folder_name)/$(arg bag_name)' $(arg record_topics)"/>
+
+</launch>
