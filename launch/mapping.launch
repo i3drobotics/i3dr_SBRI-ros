@@ -3,16 +3,19 @@
     <arg name="camera_namespace" default="i3dr_stereo"/>
     <arg name="camera_model" default="phobos_nuclear"/> <!-- deimos/phobos -->
     <arg name="split_laser" default="true"/> <!-- true/false -->
+    <arg name="auto_map" default="false"/>>
 
     <include file="$(find i3dr_rtabmap)/launch/standalone_rtabmap.launch">
-        <arg name="offline" value="false"/>
+        <arg name="camera_en" value="true"/>
         <arg name="camera_namespace" value="$(arg camera_namespace)"/>
         <arg name="camera_model" value="$(arg camera_model)"/>
         <arg name="split_laser" value="$(arg split_laser)"/>
-        <arg name="rviz" value="false" />
+        <arg name="rviz" value="true" />
+        <arg name="cameraLeft_info_url" value="file://$(find iind_calibration)/calibration/deimos/2019-03-04-OCV/left.yaml" />
+        <arg name="cameraRight_info_url" value="file://$(find iind_calibration)/calibration/deimos/2019-03-04-OCV/right.yaml" />
     </include>
 
-    <include file="$(find i3dr_ur10)/launch/ur10_auto_map.launch">
+    <include if="$(arg auto_map)" file="$(find i3dr_ur10)/launch/ur10_auto_map.launch">
         <arg name="camera_namespace" value="$(arg camera_namespace)"/>
         <arg name="camera_model" value="$(arg camera_model)"/>
         <arg name="rviz" value="true" />
