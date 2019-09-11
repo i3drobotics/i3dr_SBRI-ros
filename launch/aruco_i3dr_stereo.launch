@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="camera_namespace" default="i3dr_stereo"/>
+  <arg name="camera_model" default="phobos_nuclear" doc="[phobos_nuclear / deimos]"/> 
+  <arg name="urdf_namespace" default="$(arg camera_namespace)"/>
+
+  <!-- DRIVER I3DR STEREO CAMERA -->
+  <include if="$(arg camera_en)" file="$(find iind_system)/launch/ss_stereo.launch">
+    <arg name="camera_namespace" value="$(arg camera_namespace)" />
+    <arg name="camera_model" value="$(arg camera_model)" />
+    <arg name="urdf_namespace" value="$(arg urdf_namespace)"/>
+    <arg if="$(eval camera_model == 'deimos')" name="calib_folder" value="2019-01-31-I3DR" />
+    <arg if="$(eval camera_model == 'phobos_nuclear')" name="calib_folder" value="2019-08-29-I3DR" />
+    <arg name="dropping" value="false" />
+    <arg name="rviz" value="false" />
+    <arg name="sim" value="false" />
+    <arg name="urdf" value="true" />
+  </include>
+
+  <!-- ARUCO DETECTOR -->
+  <include file="$(find i3dr_sbri)/launch/aruco_detect.launch">
+    <arg name="camera_ns"             value="i3dr_stereo" />
+    <arg name="image_ns"              value="left/" />
+    <arg if="$(eval arg('camera_model') == 'phobos_nuclear')" name="image" value="image_rect_no_laser" />
+    <arg if="$(eval arg('camera_model') == 'deimos')" name="image" value="image_rect" />
+    <arg name="transport"             value="compressed" />
+    <arg name="length"                value="0.1" />
+    <arg name="dictionary"            value="5" />
+    <arg name="isCompresed"           value="false" />
+  </include>
+
+</launch>

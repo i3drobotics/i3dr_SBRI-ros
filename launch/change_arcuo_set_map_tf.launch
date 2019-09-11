@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="map_frame_id" value="map"/>
+  <arg name="aruco_frame_id" value="aruco"/>
+  <arg name="scan_frame_id" value="scan"/>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="map_aruco_tf" args="0 0 5  0 0 0 $(arg map_frame_id) $(arg aruco_frame_id)" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="aruco_scan_tf" args="0 3 0  0 0 0 $(arg aruco_frame_id) $(arg scan_frame_id)" />
+</launch>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find i3dr_sbri)/launch/aruco_i3dr_stereo.launch">
+  </include>
+  <node name="world_camera" pkg="tf2_ros" type="static_transform_publisher"
+        args="0 0 0  0 0 -1.57 world i3dr_stereo_cameraLeft_optical" />
+
+  <include file="$(find i3dr_stereo)/launch/aruco_i3dr_stereo.launch">
+  </include>
+  <!-- EXTRINSIC MANUAL CALIBRATION (not great, maths not right) -->
+  <!-- 
+    First number is transform between optical frames. Don't touch.
+    Second number comes from tf_echo marker frames 
+    rosrun tf tf_echo  kinect_rgb_optical_frame_marker_1 pseye_optical_frame_marker_1
+                                [1]    [2]   -->
+  <arg name="x"  value="$(eval -0.045 +0.0)"/> <!-- +0.198 -->
+  <arg name="y"  value="$(eval 0      +0.0)"/> <!-- -0.041 -->
+  <arg name="z"  value="$(eval 0      +0.0)"/> <!-- -0.056 -->
+  <arg name="r"  value="$(eval 1.57   -0.0)"/>
+  <arg name="p"  value="$(eval -1.57  -0.0)"/>
+  <arg name="yw" value="$(eval 0      -0.0)"/>
+
+  <node name="pseye_kinect" pkg="tf2_ros" type="static_transform_publisher"
+        args="
+        0.479927 -0.035379 0.610592  3.003858 -0.569113 -1.523537
+        pseye_optical_frame kinect_link" />
+        <!-- 0 0 0  0 0 0 -->
+
+    <node   name="rviz" 
+            pkg="rviz" 
+            type="rviz" 
+            args="-d $(find x2_localisation)/config/test_localisation_pseye_kinect.rviz" 
+            required="false" />
+</launch>

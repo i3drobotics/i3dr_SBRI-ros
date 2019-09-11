@@ -1,0 +1,40 @@
+<!-- Run the aruco_detect node -->
+<launch>
+
+  <arg name="camera_ns"             default="camera"     doc="namespace for camera (kinect)"/>
+  <arg name="image_ns"              default=""           doc="namespace for image (rgb)"/>
+  <arg name="image"                 default="image"      doc="image to use as input (image_rect)"/>
+  <arg name="isCompressed"          default="true"       doc="is using compressed images"/>
+  <arg name="transport"             default="compressed" doc="image transport"/>
+  <arg name="length"                default="0.1"        doc="side of the fiducial"/>
+  <arg name="dictionary"            default="5"          doc="fiducial dictionary (check wiki)"/>
+  <arg name="do_pose_estimation"    default="true"       doc="estimate pose"/>
+  <arg name="ignore_fiducials"      default=""           doc=""/>
+  <arg name="fiducial_len_override" default=""           doc=""/>
+
+  <node pkg="aruco_detect" type="aruco_detect" name="$(arg camera_ns)_aruco_detect" output="screen" respawn="false">
+    <!-- remap inputs -->
+    <remap if="$(arg isCompressed)" from="/camera/compressed" to="/$(arg camera_ns)/$(arg image_ns)$(arg image)/$(arg transport)"/>
+    <remap unless="$(arg isCompressed)" from="/camera" to="/$(arg camera_ns)/$(arg image_ns)$(arg image)"/>
+    <remap from="/camera_info" to="/$(arg camera_ns)/$(arg image_ns)camera_info"/>
+    <!-- remap outputs -->
+    <remap from="/fiducial_images" to="/$(arg camera_ns)/fiducial_images"/>
+    <remap from="/fiducial_transforms" to="/$(arg camera_ns)/fiducial_transforms"/>
+    <remap from="/fiducial_vertices" to="/$(arg camera_ns)/fiducial_vertices"/>
+    <!-- parameters -->
+    <param if="$(arg isCompressed)" name="image_transport" value="$(arg transport)"/>
+    <param name="publish_images" value="true" />
+    <param name="fiducial_len" value="$(arg length)"/>
+    <param name="dictionary" value="$(arg dictionary)"/>
+    <param name="do_pose_estimation" value="$(arg do_pose_estimation)"/>
+    <param name="ignore_fiducials" value="$(arg ignore_fiducials)"/>
+    <param name="fiducial_len_override" value="$(arg fiducial_len_override)"/>
+
+  </node>
+
+  <!-- publish to tf -->
+  <node pkg="x2_localisation" type="publishFiducialTransforms.py" name="$(arg camera_ns)_publishFT">
+    <remap from="/fiducial_transforms" to="/$(arg camera_ns)/fiducial_transforms"/>
+  </node>
+
+</launch>
