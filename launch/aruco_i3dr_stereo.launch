@@ -9,9 +9,6 @@
     <arg name="camera_namespace" value="$(arg camera_namespace)" />
     <arg name="camera_model" value="$(arg camera_model)" />
     <arg name="urdf_namespace" value="$(arg urdf_namespace)"/>
-    <arg if="$(eval camera_model == 'deimos')" name="calib_folder" value="2019-01-31-I3DR" />
-    <arg if="$(eval camera_model == 'phobos_nuclear')" name="calib_folder" value="2019-08-29-I3DR" />
-    <arg name="dropping" value="false" />
     <arg name="rviz" value="false" />
     <arg name="sim" value="false" />
     <arg name="urdf" value="true" />
