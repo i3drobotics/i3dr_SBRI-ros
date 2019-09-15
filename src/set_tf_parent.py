@@ -19,24 +19,34 @@ class ArucoSetMap:
         self.map_to_robot_base_tf = None
         self.tf_ready = False
 
-        self.ur10_base_frame_id = rospy.get_param(
-            '~ur10_base_frame_id', "base_link") #base_link / ur10_base_link
-        self.end_effector_frame_id = rospy.get_param(
-            '~end_effector_frame_id', "tool0") #tool0 / end_effector
-        self.map_frame_id = rospy.get_param(
-            '~map_frame_id', "map")
-        self.camera_frame_id = rospy.get_param(
-            '~camera_frame_id', "i3dr_stereo_base_link")
-        self.service_update = rospy.get_param(
-            '~service_update', False
+        self.frame_4_id = rospy.get_param(
+            '~frame_4_id', "base_link") #base_link / ur10_base_link
+        self.frame_3_id = rospy.get_param(
+            '~frame_3_id', "tool0") #tool0 / end_effector
+        self.frame_1_id = rospy.get_param(
+            '~frame_1_id', "map")
+        self.frame_2_id = rospy.get_param(
+            '~frame_2_id', "i3dr_stereo_base_link")
+        self.output_frame_1_id = rospy.get_param(
+            '~output_frame_1_id', "map")
+        self.output_frame_2_id = rospy.get_param(
+            '~output_frame_2_id', "ur10_base_link")
+        self.update_mode = rospy.get_param(
+            '~update_mode', "continuous"
+        )
+        self.service_name = rospy.get_param(
+            '~service_name', "i3dr_get_scan_home"
         )
 
+        if self.update_mode == "continuous":
+            self.service_update = False
+        elif self.udpate_mode == "service":
+            self.service_update = True
+
         if self.service_update:
-          rospy.Service('/i3dr_stereo/set_map_home', Empty,
+          rospy.Service(self.service_name, Empty,
                         self.handle_get_tfs)
 
-        #self.tfBuffer = tf2_ros.Buffer()
-        #self.tfListener = tf2_ros.TransformListener(self.tfBuffer)
         self.tfListener = tf.TransformListener()
         self.tfTransformer = tf.TransformerROS()
         self.tfBroadcaster = tf.TransformBroadcaster()
@@ -55,24 +65,16 @@ class ArucoSetMap:
 
     def pub_map_scan(self):
         if (self.tf_ready):
-            tf_msg = geometry_msgs.msg.TransformStamped()
-            tf_msg.header.stamp = rospy.Time.now()
-            tf_msg.header.frame_id = self.map_frame_id
-            tf_msg.child_frame_id = self.ur10_base_frame_id
-            tf_msg.transform = self.map_to_robot_base_tf
-
             scale, shear, rpy, trans, perspective = tf.transformations.decompose_matrix(
                 self.map_to_robot_base_tf)
             self.tfBroadcaster.sendTransform(trans, tf.transformations.quaternion_from_euler(
-                rpy[0], rpy[1], rpy[2]), rospy.Time().now(), self.ur10_base_frame_id, self.map_frame_id)
+                rpy[0], rpy[1], rpy[2]), rospy.Time().now(), self.output_frame_1_id, self.output_frame_2_id)
 
     def get_frame_tf(self, frame_a_id, frame_b_id):
         when = rospy.Time.now() - rospy.Duration(5.0)
         self.tfListener.waitForTransform(frame_a_id, frame_b_id, when, rospy.Duration(5.0))
         tfAB = self.tfListener.lookupTransform(frame_a_id, frame_b_id, when)
 
-        # tf = self.tfListener.transformPose(
-        #     frame_a_id, frame_b_id)
         return tfAB
 
     def calc_map_scan_tf(self, frame_group_a_tf, frame_group_b_tf):
@@ -89,12 +91,13 @@ class ArucoSetMap:
 
     def get_tfs(self):
       try:
-        group_1_tf = self.get_frame_tf(self.map_frame_id, self.camera_frame_id)
-        #print(group_1_tf)
-        # get tf from map to aruco
-        group_2_tf = self.get_frame_tf(self.end_effector_frame_id, self.ur10_base_frame_id)
-        #print(group_2_tf)
-        # calculate tf from map to scan and update transform publisher tf (scan to map)
+        # get tf from frame_1 to frame_2
+        group_1_tf = self.get_frame_tf(self.frame_1_id, self.frame_2_id)
+        # get tf from frame_3 to frame_4
+        group_2_tf = self.get_frame_tf(self.frame_3_id, self.frame_4_id)
+
+        # frame_2 = frame_3
+        # frame_1 -> frame_4 = (frame_1->frame_2 x frame_3->frame_4)
         self.map_to_robot_base_tf = self.calc_map_scan_tf(group_1_tf, group_2_tf)
 
         rospy.loginfo("Map -> ur10 base link TF calculated and publishing")
